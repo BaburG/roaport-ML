@@ -57,6 +57,7 @@ def setup_rabbitmq_connection():
 def send_message(channel, link: str, image_id: str) -> None:
     """Send a link and ID to RabbitMQ"""
     message = {
+        'type' : 'pothole',
         'id': image_id,
         'image_url': link
     }
