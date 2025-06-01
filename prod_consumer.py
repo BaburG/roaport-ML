@@ -66,7 +66,37 @@ def analyze_with_cloudflare_ai(image_base64, object_type):
         'x-goog-api-key': GOOGLE_AI_STUDIO_TOKEN
     }
     
-    prompt = f"Is there a damaged {object_type} in this image? Respond with YES or NO"
+    # Create detailed prompts based on object type
+    if object_type == "sidewalk":
+        prompt = """Examine this image carefully for sidewalk damage. Look for ANY of the following signs of damage or deterioration:
+
+1. CRACKS: Any visible cracks in the concrete/pavement surface, including hairline cracks, deep cracks, or spider web patterns
+2. HOLES OR POTHOLES: Any holes, depressions, or missing chunks of sidewalk material
+3. UNEVEN SURFACES: Raised sections, sunken areas, or significant height differences that could cause tripping
+4. BROKEN/MISSING PIECES: Chunks of concrete that are broken off or missing entirely
+5. SEVERE WEATHERING: Excessive erosion, crumbling edges, or deteriorated surface texture
+6. SETTLEMENT ISSUES: Areas where the sidewalk has sunk or shifted creating dangerous walking conditions
+7. VEGETATION DAMAGE: Tree roots pushing up through or significantly damaging the sidewalk surface
+
+Respond with YES if you detect ANY of these damage conditions. Respond with NO only if the sidewalk appears to be in good condition with no significant damage."""
+    
+    elif object_type == "sign":
+        prompt = """Examine this image carefully for traffic sign damage. Look for ANY of the following signs of damage or deterioration:
+
+1. RUST OR CORROSION: Any visible rust spots, corrosion, or oxidation on metal parts of the sign or pole
+2. DENTS OR PHYSICAL DAMAGE: Bent, dented, crushed, or physically deformed sign faces or mounting hardware
+3. FADED OR ILLEGIBLE TEXT: Text, symbols, or graphics that are significantly faded, worn off, or difficult to read
+4. BULLET HOLES OR VANDALISM: Any holes, graffiti, stickers, or intentional damage to the sign
+5. MISSING REFLECTIVE COATING: Loss of retroreflective material making the sign less visible at night
+6. LOOSE OR BROKEN MOUNTING: Signs that appear to be hanging loosely, tilted, or have broken mounting brackets
+7. CRACKED OR BROKEN FACE: Cracks, chips, or breaks in the sign face material
+8. WEATHER DAMAGE: Significant sun damage, peeling, or weather-related deterioration affecting visibility
+
+Respond with YES if you detect ANY of these damage conditions. Respond with NO only if the sign appears to be in good condition with clear, readable text and no significant damage."""
+    
+    else:
+        # Fallback for any other object types (though only sidewalk and sign should be used)
+        prompt = f"Is there a damaged {object_type} in this image? Respond with YES or NO"
     
     payload = {
         "contents": [
